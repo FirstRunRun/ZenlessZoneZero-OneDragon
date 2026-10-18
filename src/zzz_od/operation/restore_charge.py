@@ -50,9 +50,8 @@ class RestoreCharge(ZOperation):
         self.skip_backup_charge: bool = False
 
     def _should_confirm_restore(self, current_amount: int, exchange_amount: int) -> bool:
-        if exchange_amount > current_amount:
-            return False
-        return exchange_amount < current_amount
+        """兑换数量为正且不超过库存时允许确认，包含刚好用完库存的情况。"""
+        return 0 < exchange_amount <= current_amount
 
     def _should_reselect_source(self, source: str) -> bool:
         return (
